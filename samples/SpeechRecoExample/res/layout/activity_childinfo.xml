@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/cname"
+        android:hint="Child Name"
+        android:focusable="true"
+        android:textColorHighlight="#ffff299f"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+
+
+        android:layout_marginTop="46dp"
+        android:layout_below="@+id/mcon"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/age"
+        android:hint="Age"
+        android:focusable="true"
+        android:textColorHighlight="#ffff299f"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:inputType="number"
+
+
+        android:layout_marginTop="46dp"
+        android:layout_below="@+id/mcon"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/bgroup"
+        android:hint="Blood Group"
+        android:focusable="true"
+        android:textColorHighlight="#ffff299f"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+
+
+        android:layout_marginTop="46dp"
+        android:layout_below="@+id/mcon"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/cchild"
+        android:hint="Child's Contact Number"
+        android:focusable="true"
+        android:textColorHighlight="#ffff299f"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:inputType="phone"
+
+        android:layout_marginTop="46dp"
+        android:layout_below="@+id/mcon"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+
+
+    <Button
+        android:id="@+id/buyBTN"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="12dp"
+        android:background="@drawable/round_edge_btn"
+        android:text="PROCEED"
+        android:textColor="#ffffff"
+        android:textSize="14sp" />
+
+
+</LinearLayout>

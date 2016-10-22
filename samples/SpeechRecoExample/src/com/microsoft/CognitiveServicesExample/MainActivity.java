@@ -32,15 +32,19 @@
  */
 package com.microsoft.CognitiveServicesExample;
 
+
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import com.microsoft.bing.speech.SpeechClientStatus;
 import com.microsoft.cognitiveservices.speechrecognition.DataRecognitionClient;
@@ -53,7 +57,7 @@ import com.microsoft.cognitiveservices.speechrecognition.SpeechRecognitionServic
 import java.io.InputStream;
 import java.util.concurrent.TimeUnit;
 
-public class MainActivity extends Activity implements ISpeechRecognitionServerEvents
+public class MainActivity extends AppCompatActivity implements ISpeechRecognitionServerEvents
 {
     int m_waitSeconds = 0;
     DataRecognitionClient dataClient = null;
@@ -64,35 +68,19 @@ public class MainActivity extends Activity implements ISpeechRecognitionServerEv
     Button _buttonSelectMode;
     Button _startButton;
 
+
+
     public enum FinalResponseStatus { NotReceived, OK, Timeout }
 
-    /**
-     * Gets the primary subscription key
-     */
     public String getPrimaryKey() {
         return this.getString(R.string.primaryKey);
     }
-
-    /**
-     * Gets the LUIS application identifier.
-     * @return The LUIS application identifier.
-     */
     private String getLuisAppId() {
         return this.getString(R.string.luisAppID);
     }
-
-    /**
-     * Gets the LUIS subscription identifier.
-     * @return The LUIS subscription identifier.
-     */
     private String getLuisSubscriptionID() {
         return this.getString(R.string.luisSubscriptionID);
     }
-
-    /**
-     * Gets a value indicating whether or not to use the microphone.
-     * @return true if [use microphone]; otherwise, false.
-     */
     private Boolean getUseMicrophone() {
         int id = this._radioGroup.getCheckedRadioButtonId();
         return id == R.id.micIntentRadioButton ||
@@ -100,20 +88,12 @@ public class MainActivity extends Activity implements ISpeechRecognitionServerEv
                 id == (R.id.micRadioButton - 1);
     }
 
-    /**
-     * Gets a value indicating whether LUIS results are desired.
-     * @return true if LUIS results are to be returned otherwise, false.
-     */
     private Boolean getWantIntent() {
         int id = this._radioGroup.getCheckedRadioButtonId();
         return id == R.id.dataShortIntentRadioButton ||
                 id == R.id.micIntentRadioButton;
     }
 
-    /**
-     * Gets the current speech recognition mode.
-     * @return The speech recognition mode.
-     */
     private SpeechRecognitionMode getMode() {
         int id = this._radioGroup.getCheckedRadioButtonId();
         if (id == R.id.micDictationRadioButton ||
@@ -132,26 +112,66 @@ public class MainActivity extends Activity implements ISpeechRecognitionServerEv
         return "en-us";
     }
 
+
     /**
      * Gets the short wave file path.
      * @return The short wave file.
      */
+
+
+
+    /*
     private String getShortWaveFile() {
         return "whatstheweatherlike.wav";
-    }
+    }*/
+
+
+
+
 
     /**
      * Gets the long wave file path.
      * @return The long wave file.
      */
+
+
+    /*
+
     private String getLongWaveFile() {
         return "batman.wav";
     }
+
+
+    */
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+        Button b2=(Button)findViewById(R.id.button3);
+        b2.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i=new Intent(MainActivity.this,Location.class);
+                startActivity(i);
+            }
+        });
+
+
+        Button b=(Button)findViewById(R.id.button);
+        b.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i=new Intent(MainActivity.this,GestureRec.class);
+                startActivity(i);
+
+            }
+        });
 
         this._logText = (EditText) findViewById(R.id.editText1);
         this._radioGroup = (RadioGroup)findViewById(R.id.groupMode);
@@ -265,7 +285,7 @@ public class MainActivity extends Activity implements ISpeechRecognitionServerEv
                 }
             }
 
-            this.SendAudioHelper((this.getMode() == SpeechRecognitionMode.ShortPhrase) ? this.getShortWaveFile() : this.getLongWaveFile());
+          //  this.SendAudioHelper((this.getMode() == SpeechRecognitionMode.ShortPhrase) ? this.getShortWaveFile() : this.getLongWaveFile());
         }
     }
 
@@ -282,8 +302,13 @@ public class MainActivity extends Activity implements ISpeechRecognitionServerEv
             recoSource = "long wav file";
         }
 
-        this.WriteLine("\n--- Start speech recognition using " + recoSource + " with " + this.getMode() + " mode in " + this.getDefaultLocale() + " language ----\n\n");
+        this.WriteLine("\n--- Start speech recognition using " + "microphone" + " with " + this.getMode() + " mode in " + this.getDefaultLocale() + " language ----\n\n");
     }
+
+
+
+
+    /*
 
     private void SendAudioHelper(String filename) {
         RecognitionTask doDataReco = new RecognitionTask(this.dataClient, this.getMode(), filename);
@@ -297,6 +322,7 @@ public class MainActivity extends Activity implements ISpeechRecognitionServerEv
             isReceivedResponse = FinalResponseStatus.Timeout;
         }
     }
+    */
 
     public void onFinalResponseReceived(final RecognitionResult response) {
         boolean isFinalDicationMessage = this.getMode() == SpeechRecognitionMode.LongDictation &&
@@ -317,8 +343,21 @@ public class MainActivity extends Activity implements ISpeechRecognitionServerEv
         if (!isFinalDicationMessage) {
             this.WriteLine("********* Final n-BEST Results *********");
             for (int i = 0; i < response.Results.length; i++) {
+
+
+
+
+
+                Intent intent=new Intent(MainActivity.this,Results.class);
+                intent.putExtra("result",response.Results[i].DisplayText.toString().toLowerCase());
+                startActivity(intent);
+
+
+                /*
                 this.WriteLine("[" + i + "]" + " Confidence=" + response.Results[i].Confidence +
-                        " Text=\"" + response.Results[i].DisplayText + "\"");
+                          " Text=\"" + response.Results[i].DisplayText.toLowerCase() + "\"");
+                      */
+
             }
 
             this.WriteLine();
@@ -328,17 +367,20 @@ public class MainActivity extends Activity implements ISpeechRecognitionServerEv
     /**
      * Called when a final response is received and its intent is parsed
      */
+
     public void onIntentReceived(final String payload) {
         this.WriteLine("--- Intent received by onIntentReceived() ---");
         this.WriteLine(payload);
         this.WriteLine();
     }
 
+
     public void onPartialResponseReceived(final String response) {
         this.WriteLine("--- Partial result received by onPartialResponseReceived() ---");
         this.WriteLine(response);
         this.WriteLine();
     }
+
 
     public void onError(final int errorCode, final String response) {
         this._startButton.setEnabled(true);
@@ -465,4 +507,12 @@ public class MainActivity extends Activity implements ISpeechRecognitionServerEv
             return null;
         }
     }
+
+
+    /*
+    public void getGesture(View v){
+
+    }*/
+
+
 }

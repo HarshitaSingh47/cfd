@@ -15,13 +15,16 @@
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.SEND_SMS"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
     
 
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/Theme.AppCompat" >
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name" >
@@ -31,6 +34,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".Results" android:theme="@style/Theme.AppCompat"/>
+        <activity android:name=".GestureRec" android:theme="@style/Theme.AppCompat.Light"/>
+        <activity android:name=".Location" android:theme="@style/Theme.AppCompat.Light"/>
     </application>
 
 </manifest>
