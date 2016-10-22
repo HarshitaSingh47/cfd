@@ -38,6 +38,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -54,6 +55,9 @@ import com.microsoft.cognitiveservices.speechrecognition.RecognitionResult;
 import com.microsoft.cognitiveservices.speechrecognition.RecognitionStatus;
 import com.microsoft.cognitiveservices.speechrecognition.SpeechRecognitionMode;
 import com.microsoft.cognitiveservices.speechrecognition.SpeechRecognitionServiceFactory;
+
+import org.w3c.dom.Text;
+
 import java.io.InputStream;
 import java.util.concurrent.TimeUnit;
 
@@ -66,7 +70,8 @@ public class MainActivity extends AppCompatActivity implements ISpeechRecognitio
     EditText _logText;
     RadioGroup _radioGroup;
     Button _buttonSelectMode;
-    Button _startButton;
+    FloatingActionButton _startButton;
+    TextView tv;
 
 
 
@@ -152,7 +157,11 @@ public class MainActivity extends AppCompatActivity implements ISpeechRecognitio
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        tv=(TextView)findViewById(R.id.textView2);
 
+
+
+        /*
         Button b2=(Button)findViewById(R.id.button3);
         b2.setOnClickListener(new OnClickListener() {
             @Override
@@ -160,9 +169,10 @@ public class MainActivity extends AppCompatActivity implements ISpeechRecognitio
                 Intent i=new Intent(MainActivity.this,Location.class);
                 startActivity(i);
             }
-        });
+        });*/
 
 
+        /*
         Button b=(Button)findViewById(R.id.button);
         b.setOnClickListener(new OnClickListener() {
             @Override
@@ -172,11 +182,12 @@ public class MainActivity extends AppCompatActivity implements ISpeechRecognitio
 
             }
         });
+        */
 
         this._logText = (EditText) findViewById(R.id.editText1);
         this._radioGroup = (RadioGroup)findViewById(R.id.groupMode);
         this._buttonSelectMode = (Button)findViewById(R.id.buttonSelectMode);
-        this._startButton = (Button) findViewById(R.id.button1);
+        this._startButton = (FloatingActionButton) findViewById(R.id.fab);
 
         if (getString(R.string.primaryKey).startsWith("Please")) {
             new AlertDialog.Builder(this)
@@ -190,17 +201,24 @@ public class MainActivity extends AppCompatActivity implements ISpeechRecognitio
         final MainActivity This = this;
         this._startButton.setOnClickListener(new OnClickListener() {
             @Override
+
             public void onClick(View arg0) {
+                tv.setText("Getting ready");
+
+
                 This.StartButton_Click(arg0);
             }
         });
 
+        _buttonSelectMode.setVisibility(View.INVISIBLE);
+        /*
         this._buttonSelectMode.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View arg0) {
                 This.ShowMenu(This._radioGroup.getVisibility() == View.INVISIBLE);
             }
         });
+        */
 
         this._radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -226,6 +244,8 @@ public class MainActivity extends AppCompatActivity implements ISpeechRecognitio
      * Handles the Click event of the _startButton control.
      */
     private void StartButton_Click(View arg0) {
+
+
         this._startButton.setEnabled(false);
         this._radioGroup.setEnabled(false);
 
@@ -238,7 +258,9 @@ public class MainActivity extends AppCompatActivity implements ISpeechRecognitio
         if (this.getUseMicrophone()) {
             if (this.micClient == null) {
                 if (this.getWantIntent()) {
-                    this.WriteLine("--- Start microphone dictation with Intent detection ----");
+
+
+                    this.WriteLine("Start microphone dictation with Intent detection ");
 
                     this.micClient =
                             SpeechRecognitionServiceFactory.createMicrophoneClientWithIntent(
@@ -302,7 +324,7 @@ public class MainActivity extends AppCompatActivity implements ISpeechRecognitio
             recoSource = "long wav file";
         }
 
-        this.WriteLine("\n--- Start speech recognition using " + "microphone" + " with " + this.getMode() + " mode in " + this.getDefaultLocale() + " language ----\n\n");
+       this.WriteLine("\n SPEECH RECOGNITION START " + "microphone" + " WITH " + this.getMode() + " MODE IN " + this.getDefaultLocale() + " language ----\n\n");
     }
 
 
@@ -341,7 +363,7 @@ public class MainActivity extends AppCompatActivity implements ISpeechRecognitio
         }
 
         if (!isFinalDicationMessage) {
-            this.WriteLine("********* Final n-BEST Results *********");
+           this.WriteLine("FINAL RESULT");
             for (int i = 0; i < response.Results.length; i++) {
 
 
@@ -353,10 +375,10 @@ public class MainActivity extends AppCompatActivity implements ISpeechRecognitio
                 startActivity(intent);
 
 
-                /*
-                this.WriteLine("[" + i + "]" + " Confidence=" + response.Results[i].Confidence +
-                          " Text=\"" + response.Results[i].DisplayText.toLowerCase() + "\"");
-                      */
+
+                this.WriteLine(" CONFIDENCE TEXT =" +
+                            response.Results[i].DisplayText.toLowerCase() + "\"");
+
 
             }
 
@@ -369,14 +391,14 @@ public class MainActivity extends AppCompatActivity implements ISpeechRecognitio
      */
 
     public void onIntentReceived(final String payload) {
-        this.WriteLine("--- Intent received by onIntentReceived() ---");
+        this.WriteLine("INTENT RECEIVED \n");
         this.WriteLine(payload);
         this.WriteLine();
     }
 
 
     public void onPartialResponseReceived(final String response) {
-        this.WriteLine("--- Partial result received by onPartialResponseReceived() ---");
+        this.WriteLine("PARTIAL \n");
         this.WriteLine(response);
         this.WriteLine();
     }
@@ -384,7 +406,7 @@ public class MainActivity extends AppCompatActivity implements ISpeechRecognitio
 
     public void onError(final int errorCode, final String response) {
         this._startButton.setEnabled(true);
-        this.WriteLine("--- Error received by onError() ---");
+        this.WriteLine("ERROR \n");
         this.WriteLine("Error code: " + SpeechClientStatus.fromInt(errorCode) + " " + errorCode);
         this.WriteLine("Error text: " + response);
         this.WriteLine();
@@ -395,10 +417,11 @@ public class MainActivity extends AppCompatActivity implements ISpeechRecognitio
      * @param recording The current recording state
      */
     public void onAudioEvent(boolean recording) {
-        this.WriteLine("--- Microphone status change received by onAudioEvent() ---");
-        this.WriteLine("********* Microphone status: " + recording + " *********");
+        this.WriteLine(" MIC STATUS CHANGE REC. BY onAudioEvent()");
+        this.WriteLine("MIC STATUS: " + recording + " *********");
         if (recording) {
-            this.WriteLine("Please start speaking.");
+            this.WriteLine("PLEASE START SPEAKING.");
+            //tv.setText("Please start speaking.");
         }
 
         WriteLine();

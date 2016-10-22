@@ -22,11 +22,12 @@ repositories {
 }
 dependencies {
     compile 'com.microsoft.projectoxford:speechrecognition:1.1.0'
-    compile 'com.android.support:appcompat-v7:24.2.1'
+    compile 'com.android.support:appcompat-v7:23.0.1'
+    compile 'com.android.support:design:23.0.1'
 }
 
 android {
-    compileSdkVersion 24
+    compileSdkVersion 23
     buildToolsVersion '24.0.3'
 
     productFlavors {
